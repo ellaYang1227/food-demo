@@ -1,0 +1,7 @@
+<nav class="nav nav-pills">
+  <a class="nav-link" [class.active]="category.name === currentCategory" href="#" *ngFor="let category of categorys"
+    (click)="$event.preventDefault(); switchCategory(category.name)">
+    <fa-icon [icon]="['fas', category.icon]" size="2x"></fa-icon>
+    <strong class="d-block">{{ category.name }}</strong>
+  </a>
+</nav>

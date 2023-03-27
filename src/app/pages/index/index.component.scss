@@ -1,0 +1,10 @@
+@import "../../../styles/bs-variables";
+
+.nav-link {
+  background-color: var(--bs-light);
+  border: $border-width $border-style $border-color;
+
+  + .nav-link {
+    margin-left: 0.75rem;
+  }
+}

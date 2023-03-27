@@ -1,0 +1,32 @@
+[
+  {
+    "category": "漢堡",
+    "name": "美式經典起司牛肉堡",
+    "img": "https://images.pexels.com/photos/3616956/pexels-photo-3616956.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "price": "240"
+  },
+  {
+    "category": "漢堡",
+    "name": "醬燒培根牛肉堡",
+    "img": " https://images.pexels.com/photos/2983098/pexels-photo-2983098.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "price": "210"
+  },
+  {
+    "category": "披薩",
+    "name": "香腸披薩",
+    "img": " https://images.pexels.com/photos/3682837/pexels-photo-3682837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "price": "235"
+  },
+  {
+    "category": "披薩",
+    "name": "蔬食披薩",
+    "img": " https://images.pexels.com/photos/2983098/pexels-photo-2983098.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "price": "195"
+  },
+  {
+    "category": "甜點",
+    "name": "提拉米蘇",
+    "img": " https://images.pexels.com/photos/10169991/pexels-photo-10169991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "price": "65"
+  }
+]
