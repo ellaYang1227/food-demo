@@ -1,7 +1,28 @@
+<!-- 選單 -->
 <nav class="nav nav-pills">
-  <a class="nav-link" [class.active]="category.name === currentCategory" href="#" *ngFor="let category of categorys"
-    (click)="$event.preventDefault(); switchCategory(category.name)">
+  <a class="nav-link text-center" [class.active]="category.name === search.category" href="#"
+    *ngFor="let category of categorys" (click)="$event.preventDefault(); switchCategory(category.name)">
     <fa-icon [icon]="['fas', category.icon]" size="2x"></fa-icon>
-    <strong class="d-block">{{ category.name }}</strong>
+    <small class="d-block mt-1">{{ category.name }}</small>
   </a>
 </nav>
+<!-- 搜尋 -->
+<div class="input-group mt-5 mb-4">
+  <span class="input-group-text bg-light border-top-0 border-end-0 border-start-0 rounded-0">
+    <fa-icon [icon]="['fas', 'magnifying-glass']"></fa-icon>
+  </span>
+  <input type="text" class="form-control bg-light border-top-0 border-end-0 border-start-0 rounded-0"
+    placeholder="請輸入餐點名稱" aria-label="search" #searchInput ngModel>
+</div>
+<!-- card -->
+<div class="row row-cols-1 row-cols-md-5 g-4">
+  <div class="col" *ngFor="let filterProduct of filterProducts">
+    <div class="card h-100 border-0">
+      <img [src]="getSafeImageUrl(filterProduct.img)" class="card-img-top rounded-4 img-object-fit-cover"
+        [alt]="filterProduct.category + '-' + filterProduct.name" style="height: 180px;">
+      <div class="card-body">
+        <h1 class="card-title h5">Card title</h1>
+      </div>
+    </div>
+  </div>
+</div>

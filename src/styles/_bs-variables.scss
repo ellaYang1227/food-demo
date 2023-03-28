@@ -411,7 +411,7 @@ $body-text-align: null !default;
 //
 // Style anchor elements.
 
-$link-color: $primary !default;
+$link-color: $warning !default;
 $link-decoration: underline !default;
 $link-shade-percentage: 20% !default;
 $link-hover-color: shift-color($link-color, $link-shade-percentage) !default;
@@ -509,7 +509,7 @@ $box-shadow-inset: inset 0 1px 2px rgba($black, 0.075) !default;
 // scss-docs-end box-shadow-variables
 
 $component-active-color: $white !default;
-$component-active-bg: $primary !default;
+$component-active-bg: $warning !default;
 
 // scss-docs-start caret-variables
 $caret-width: 0.3em !default;
@@ -576,6 +576,7 @@ $h3-font-size: $font-size-base * 1.75 !default;
 $h4-font-size: $font-size-base * 1.5 !default;
 $h5-font-size: $font-size-base * 1.25 !default;
 $h6-font-size: $font-size-base !default;
+$h7-font-size: $font-size-base * 0.875 !default;
 // scss-docs-end font-variables
 
 // scss-docs-start font-sizes
@@ -586,6 +587,7 @@ $font-sizes: (
   4: $h4-font-size,
   5: $h5-font-size,
   6: $h6-font-size,
+  7: $h7-font-size,
 ) !default;
 // scss-docs-end font-sizes
 
@@ -723,7 +725,7 @@ $input-btn-font-family: null !default;
 $input-btn-font-size: $font-size-base !default;
 $input-btn-line-height: $line-height-base !default;
 
-$input-btn-focus-width: 0.25rem !default;
+$input-btn-focus-width: 0 !default;
 $input-btn-focus-color-opacity: 0.25 !default;
 $input-btn-focus-color: rgba(
   $component-active-bg,
@@ -844,7 +846,10 @@ $input-border-radius-sm: $border-radius-sm !default;
 $input-border-radius-lg: $border-radius-lg !default;
 
 $input-focus-bg: $input-bg !default;
-$input-focus-border-color: tint-color($component-active-bg, 50%) !default;
+$input-focus-border-color: tint-color(
+  $component-active-bg,
+  50%
+) !default; //tint-color($component-active-bg, 50%)
 $input-focus-color: $input-color !default;
 $input-focus-width: $input-btn-focus-width !default;
 $input-focus-box-shadow: $input-btn-focus-box-shadow !default;

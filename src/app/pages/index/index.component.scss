@@ -1,10 +1,20 @@
 @import "../../../styles/bs-variables";
 
-.nav-link {
-  background-color: var(--bs-light);
-  border: $border-width $border-style $border-color;
+.nav-pills {
+  .nav-link {
+    border: $border-width $border-style $warning;
 
-  + .nav-link {
-    margin-left: 0.75rem;
+    &:hover {
+      color: $nav-pills-link-active-color;
+      background-color: $nav-pills-link-active-bg;
+    }
+
+    small {
+      color: $dark;
+    }
+
+    + .nav-link {
+      margin-left: 0.75rem;
+    }
   }
 }
