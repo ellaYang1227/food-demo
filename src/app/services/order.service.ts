@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { SwalDefaultService } from '@services/swal-default.service';
+import { BehaviorSubject } from 'rxjs';
 
 let swalPopup: any;
 let swalToast: any;
@@ -9,7 +9,10 @@ let swalToast: any;
   providedIn: 'root'
 })
 export class OrderService {
-  order: Array<any> = [];
+  order: any = {
+    data: [],
+    subTotal: 0
+  };
   order$ = new BehaviorSubject<any>(false);
   constructor(
     private swalDefaultService: SwalDefaultService
@@ -18,49 +21,40 @@ export class OrderService {
     swalToast = this.swalDefaultService.toastDefault;
   }
 
+  // 清除訂單
   emptyOrder() {
-    this.order = [];
+    this.order.data = [];
     localStorage.removeItem('order');
     this.order$.next(false);
   }
 
+  // 取得訂單
   getOrder() {
-    console.log('getorder')
     let orderStr = localStorage.getItem('order');
     if (orderStr) {
-      const order = JSON.parse(orderStr);
-      this.order = order.data;
-      this.changeOrder$(order);
+      this.order = JSON.parse(orderStr);
+      this.changeOrder$(this.order);
     }
   }
 
+  // 更新訂單
   updateOrder(action: 'add' | 'del', product: any) {
     const { id, price } = product;
+    const { data } = this.order;
 
-    console.log(id, this.order)
-    const findOrderIndex = this.order.findIndex((item: any) => item.id === id);
-    console.log(findOrderIndex)
+    const findOrderIndex = data.findIndex((item: any) => item.id === id);
     if (action === 'add') {
       if (findOrderIndex === -1) {
         const qty = 1;
-        this.order.push({ id, price, qty });
+        data.push({ id, price, qty });
       } else {
-        this.order[findOrderIndex].qty++;
+        data[findOrderIndex].qty++;
       }
     } else if (action === 'del' && findOrderIndex > -1) {
-      console.log(findOrderIndex)
-      this.order.splice(findOrderIndex, 1);
+      data.splice(findOrderIndex, 1);
     }
 
-
-    let subTotal = this.order.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.price * currentValue.qty, 0);
-    const addOrder = {
-      id: new Date().getTime(),
-      data: this.order,
-      subTotal
-    };
-
-    this.changeOrder$(addOrder, true);
+    this.computeSubTotal(data);
 
     swalToast.fire({
       icon: 'success',
@@ -68,18 +62,50 @@ export class OrderService {
     });
   }
 
+  computeSubTotal(orderItem: Array<any>) {
+    this.order.subTotal = orderItem.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.price * currentValue.qty, 0);
+
+    if (!this.order.id) {
+      this.order = {
+        ...this.order,
+        id: new Date().getTime(),
+      };
+    }
+
+    this.changeOrder$(this.order, true);
+    swalToast.fire({
+      icon: 'success',
+      title: `成功更新該品項`
+    });
+  }
+
+  // 更新數量
+  updateQty(action: 'plus' | 'minus', productId: string) {
+    let { data } = this.order;
+    data = data.map((item: any) => {
+      if (item.id === productId) {
+        item.qty = action === 'plus' ? item.qty + 1 : item.qty - 1;
+      }
+
+      return item;
+    });
+
+    this.computeSubTotal(data);
+  }
+
+  // 送出訂單
   sendOrder() {
     this.emptyOrder();
     swalPopup.fire({
       title: '訂單已送出',
       icon: 'success',
-      //confirmButtonText: '立即登入',
       showConfirmButton: false
     });
   }
 
-  changeOrder$(data: any, isStoreLocalStorage?: boolean) {
-    this.order$.next(data);
-    if (isStoreLocalStorage) { localStorage.setItem('order', JSON.stringify(data)) }
+  // 改變 Order$
+  changeOrder$(order: any, isStoreLocalStorage?: boolean) {
+    this.order$.next(order);
+    if (isStoreLocalStorage) { localStorage.setItem('order', JSON.stringify(order)) }
   }
 }

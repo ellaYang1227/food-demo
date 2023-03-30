@@ -1,5 +1,48 @@
 <div class="row g-0 py-4 h-100">
-  <div class="col-md-3">
+  <div class="col-lg order-lg-last">
+    <div class="px-4">
+      <!-- 選單 -->
+      <nav class="nav nav-pills">
+        <a class="nav-link text-center" [class.active]="category.name === search.category" href="#"
+          *ngFor="let category of categorys" (click)="$event.preventDefault(); switchCategory(category.name)">
+          <fa-icon [icon]="['fas', category.icon]" size="2x"></fa-icon>
+          <small class="d-block mt-1">{{ category.name }}</small>
+        </a>
+      </nav>
+      <!-- 搜尋 -->
+      <div class="input-group mt-5 mb-4">
+        <span class="input-group-text bg-light border-top-0 border-end-0 border-start-0 rounded-0">
+          <fa-icon [icon]="['fas', 'magnifying-glass']"></fa-icon>
+        </span>
+        <input type="text" class="form-control bg-light border-top-0 border-end-0 border-start-0 rounded-0"
+          placeholder="請輸入餐點名稱" aria-label="search" #searchInput="ngModel" ngModel>
+      </div>
+      <!-- card -->
+      <div class="row row-cols-1 row-cols-md-3 row-cols-lg-2 row-cols-xxl-5 g-4"
+        *ngIf="filterProducts?.length; else noData">
+        <a class="col text-decoration-none" *ngFor="let filterProduct of filterProducts" href="#"
+          (click)="$event.preventDefault(); updateOrder('add', filterProduct.id)">
+          <div class="card h-100 border-0">
+            <div class="img-block rounded-4">
+              <img [src]="getSafeImageUrl(filterProduct.img)" class="card-img-top img-object-fit-cover h-100"
+                [alt]="filterProduct.category + '-' + filterProduct.name">
+            </div>
+            <div class="card-body px-0 py-2">
+              <h1 class="card-title h5 fw-bold text-body mb-0">{{ filterProduct.name }}</h1>
+              <strong class="text-danger">{{ filterProduct.price | currency:'':'symbol':'1.0-0' }}</strong>
+            </div>
+          </div>
+        </a>
+      </div>
+      <ng-template #noData>
+        <div class="py-4 text-center text-muted">
+          <fa-icon [icon]="['fas','inbox']" size="4x" class="opacity-25"></fa-icon>
+          <p class="mb-0">沒有資料</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="col-lg-5 col-xxl-3">
     <div class="bg-light h-100 p-3">
       <div class="card h-100 border-0 rounded-0 bg-transparent">
         <h2 class="h4 mb-0 d-flex align-items-center">點餐明細<button type="button" [disabled]="!order?.data?.length"
@@ -7,7 +50,7 @@
         <ul class="list-group list-group-flush my-2">
           <li class="list-group-item fw-bold border-0 text-center">
             <ul class="list-unstyled row align-items-center g-2">
-              <li class="col-md-6 d-flex align-items-center">
+              <li class="col-4 col-sm-6 d-flex align-items-center">
                 <div class="btn-del-width flex-shrink-0"></div>
                 產品
               </li>
@@ -19,7 +62,7 @@
           <ng-template [ngIf]="order?.data?.length" [ngIfElse]="noOrderData">
             <li class="list-group-item bg-transparent" *ngFor="let item of order.data">
               <ul class="list-unstyled row align-items-center g-2">
-                <li class="col-md-6 d-flex align-items-center">
+                <li class="col-4 col-sm-6 d-flex align-items-center">
                   <button type="button"
                     class="btn btn-link btn-del-width text-start flex-shrink-0 text-decoration-none link-secondary opacity-75 p-0">
                     <fa-icon [icon]="['fas', 'trash-can']" (click)="updateOrder('del', item.id)"></fa-icon>
@@ -30,10 +73,18 @@
                   </h1>
                 </li>
                 <li class="col text-end">{{ item.price | currency:'':'symbol':'1.0-0' }}</li>
-                <li class="col text-center">
-                  <button type="button" class="btn btn-link link-secondary" (click)="orderService.emptyOrder()"><fa-icon
-                      [icon]="['fas', 'plus-large']" (click)="updateOrder('del', item.id)"></fa-icon></button>
+                <li class="col d-flex justify-content-between align-items-center">
+                  <button type="button"
+                    class="btn btn-link link-secondary p-1 btn-qty-size d-flex justify-content-center align-items-center"
+                    (click)="updateQty('minus', item.id)" [disabled]="item.qty === 1">
+                    <fa-icon [icon]="['far', 'square-minus']"></fa-icon>
+                  </button>
                   {{ item.qty }}
+                  <button type="button"
+                    class="btn btn-link link-secondary p-1 btn-qty-size d-flex justify-content-center align-items-center"
+                    (click)="updateQty('plus', item.id)" [disabled]="item.qty === 20">
+                    <fa-icon [icon]="['far', 'square-plus']"></fa-icon>
+                  </button>
                 </li>
                 <li class="col text-end text-danger fw-bold">{{ (item.price * item.qty) | currency:'':'symbol':'1.0-0'
                   }}</li>
@@ -65,48 +116,6 @@
         <button type="button" class="btn btn-danger w-100" [disabled]="!order?.data?.length"
           (click)="sendOrder()">送出訂單</button>
       </div>
-    </div>
-  </div>
-  <div class="col-md">
-    <div class="px-4">
-      <!-- 選單 -->
-      <nav class="nav nav-pills">
-        <a class="nav-link text-center" [class.active]="category.name === search.category" href="#"
-          *ngFor="let category of categorys" (click)="$event.preventDefault(); switchCategory(category.name)">
-          <fa-icon [icon]="['fas', category.icon]" size="2x"></fa-icon>
-          <small class="d-block mt-1">{{ category.name }}</small>
-        </a>
-      </nav>
-      <!-- 搜尋 -->
-      <div class="input-group mt-5 mb-4">
-        <span class="input-group-text bg-light border-top-0 border-end-0 border-start-0 rounded-0">
-          <fa-icon [icon]="['fas', 'magnifying-glass']"></fa-icon>
-        </span>
-        <input type="text" class="form-control bg-light border-top-0 border-end-0 border-start-0 rounded-0"
-          placeholder="請輸入餐點名稱" aria-label="search" #searchInput="ngModel" ngModel>
-      </div>
-      <!-- card -->
-      <div class="row row-cols-1 row-cols-md-3 row-cols-xxl-5 g-4" *ngIf="filterProducts?.length; else noData">
-        <a class="col text-decoration-none" *ngFor="let filterProduct of filterProducts" href="#"
-          (click)="$event.preventDefault(); updateOrder('add', filterProduct.id)">
-          <div class="card h-100 border-0">
-            <div class="img-block rounded-4">
-              <img [src]="getSafeImageUrl(filterProduct.img)" class="card-img-top img-object-fit-cover h-100"
-                [alt]="filterProduct.category + '-' + filterProduct.name">
-            </div>
-            <div class="card-body px-0 py-2">
-              <h1 class="card-title h5 fw-bold text-body mb-0">{{ filterProduct.name }}</h1>
-              <strong class="text-danger">{{ filterProduct.price | currency:'':'symbol':'1.0-0' }}</strong>
-            </div>
-          </div>
-        </a>
-      </div>
-      <ng-template #noData>
-        <div class="py-4 text-center text-muted">
-          <fa-icon [icon]="['fas','inbox']" size="4x" class="opacity-25"></fa-icon>
-          <p class="mb-0">沒有資料</p>
-        </div>
-      </ng-template>
     </div>
   </div>
 </div>

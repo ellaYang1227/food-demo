@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { debounceTime, distinctUntilChanged, forkJoin, map, Subscription } from 'rxjs';
 import { OrderService } from '@services/order.service';
 import { ProductService } from '@services/product.service';
+import { debounceTime, distinctUntilChanged, forkJoin, map, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-index',
@@ -35,7 +35,6 @@ export class IndexComponent implements OnInit {
       this.productService.getCategorys(),
       this.productService.getProducts()
     ]).subscribe((resArr: Array<any>) => {
-      console.log(resArr)
       this.categorys = resArr[0];
       this.search.category = this.categorys[0].name;
       this.products = resArr[1];
@@ -50,7 +49,6 @@ export class IndexComponent implements OnInit {
         distinctUntilChanged()
       )
         .subscribe(keyword => {
-          console.log(keyword)
           this.search.keyword = keyword;
           this.getFilterProducts();
         })
@@ -59,7 +57,6 @@ export class IndexComponent implements OnInit {
     // 訂閱購物車
     this.order$ = this.orderService.order$.subscribe((res: any) => {
       if (res) {
-        console.log(res)
         this.order = res;
       } else {
         this.order = {};
@@ -71,9 +68,7 @@ export class IndexComponent implements OnInit {
   // 篩選產品
   getFilterProducts() {
     const { category, keyword } = this.search;
-    console.log(category, keyword)
     this.filterProducts = this.products.filter((product: any) => product.category === category && (!keyword || product.name.indexOf(keyword) > -1));
-    console.log(this.filterProducts)
   }
 
   // 切換產品類別
@@ -88,10 +83,8 @@ export class IndexComponent implements OnInit {
   }
 
   // 更新購物車
-  updateOrder(action: 'add' | 'del', productId: any) {
-    console.log(productId)
+  updateOrder(action: 'add' | 'del', productId: string) {
     const findProduct = this.products.find((product: any) => product.id === productId);
-    console.log(findProduct)
     this.orderService.updateOrder(action, findProduct);
   }
 
@@ -99,6 +92,11 @@ export class IndexComponent implements OnInit {
   getProductInfo(productId: any, searchKey: string): string {
     const find = this.products?.find((product: any) => product.id === productId);
     return find ? find[searchKey] : '';
+  }
+
+  // 更新數量
+  updateQty(action: 'plus' | 'minus', productId: string) {
+    this.orderService.updateQty(action, productId);
   }
 
   // 送出訂單
