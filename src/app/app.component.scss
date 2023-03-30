@@ -1,0 +1,4 @@
+@import "../styles/bs-variables";
+.main-height {
+  height: calc(100vh - $navbar-height);
+}

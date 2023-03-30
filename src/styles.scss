@@ -20,3 +20,139 @@
 .active {
   pointer-events: none;
 }
+
+/*
+* ==========================================================================
+* sweetalert2
+* ==========================================================================
+*/
+
+// 登入失敗 popup
+.swal2-container {
+  &.login-error {
+    z-index: 999999 !important;
+  }
+}
+
+// popup
+.swal2-popup:not(.swal2-toast) {
+  .swal2-icon {
+    margin-bottom: 1em;
+  }
+
+  &.swal2-icon-success {
+    .swal2-title {
+      color: $success !important;
+    }
+  }
+
+  &.swal2-icon-error {
+    .swal2-title {
+      color: $danger !important;
+    }
+  }
+
+  &.swal2-icon-warning {
+    .swal2-title {
+      color: $warning !important;
+    }
+  }
+
+  .swal2-title {
+    color: $dark !important;
+    margin-bottom: 0;
+    padding-top: 0;
+  }
+
+  .swal2-content,
+  .swal2-html-container {
+    color: $body-color !important;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .swal2-close {
+    &:hover {
+      color: $secondary !important;
+    }
+
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+
+  label {
+    color: $body-color;
+    font-weight: 500;
+  }
+
+  // checkbox && radio
+  .swal2-radio,
+  .swal2-checkbox {
+    flex-direction: column;
+    align-items: flex-start !important;
+
+    label {
+      cursor: pointer;
+    }
+  }
+}
+
+// toast
+.swal2-toast {
+  &.swal2-icon-success {
+    .swal2-title {
+      color: $success !important;
+    }
+  }
+
+  &.swal2-icon-error {
+    .swal2-title {
+      color: $danger !important;
+    }
+  }
+
+  .swal2-title {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: left;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+
+    * {
+      color: $body-color !important;
+      display: block;
+      font-size: 95%;
+    }
+  }
+
+  .swal2-html-container {
+    margin: 0 !important;
+  }
+}
+
+// 共用
+.swal2-timer-progress-bar {
+  background: rgba($dark, 0.15) !important;
+}
+
+.swal2-styled {
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+.swal2-icon {
+  &.swal2-warning {
+    border-color: $warning !important;
+    color: $warning !important;
+  }
+}
+
+.swal2-actions {
+  button {
+    margin-left: 0.125rem;
+    margin-right: 0.125rem;
+  }
+}
