@@ -43,13 +43,5 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.6.2"
-  },
-  "deploy": {
-    "builder": "angular-cli-ghpages:deploy",
-    "options": {
-      "baseHref": "/food-demo/",
-      "name": "ellaYang1227",
-      "email": "yanzi19841227@gmail.com"
-    }
   }
 }
