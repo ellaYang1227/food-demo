@@ -1,0 +1,14 @@
+[
+  {
+    "name": "漢堡",
+    "icon": "burger"
+  },
+  {
+    "name": "披薩",
+    "icon": "pizza-slice"
+  },
+  {
+    "name": "甜點",
+    "icon": "cake-candles"
+  }
+]
